@@ -12,17 +12,21 @@ class AuthServices {
     required String email,
     required String password,
   }) async {
-    final String url = '${Const.userBaseURL}register/';
+    final String url = '${Const.userBaseURL}register';
     _dio.options.contentType = Headers.jsonContentType;
 
-    FormData formData = FormData.fromMap({
+    Map<String, dynamic> data = {
       'email': email,
       'password': password,
-    });
+    };
 
     try {
-      final Response response = await _dio.post(url, data: formData);
+      log('1');
+      final Response response = await _dio.post(url, data: data);
+
+      log(response.statusCode.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
+        log('2');
         final token = response.data['token'];
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
@@ -42,26 +46,23 @@ class AuthServices {
     required String email,
     required String password,
   }) async {
-    final String url = '${Const.userBaseURL}login/';
-
+    final String url = '${Const.userBaseURL}login';
     _dio.options.contentType = Headers.jsonContentType;
 
-    FormData formData = FormData.fromMap({
-      'email_or_username': email,
+    Map<String, dynamic> data = {
+      'email': email,
       'password': password,
-    });
+    };
 
     try {
-      final Response response = await _dio.post(url, data: formData);
-
+      final Response response = await _dio.post(url, data: data);
+      log(response.statusCode.toString());
       if (response.statusCode == 200 || response.statusCode == 201) {
         final token = response.data['token'];
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
-        log(response.data['message']);
         return null;
       } else {
-        log(response.data['error']);
         return ServerFailure.fromResponse(response.statusCode!, response.data);
       }
     } on DioException catch (dioError) {

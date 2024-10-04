@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -13,9 +15,7 @@ import 'package:sumanel_technology/core/widgets/password_text_field.dart';
 import 'package:sumanel_technology/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 
 class LoginScreenBody extends StatefulWidget {
-  const LoginScreenBody({
-    super.key,
-  });
+  const LoginScreenBody({super.key});
 
   @override
   State<LoginScreenBody> createState() => _LoginScreenBodyState();
@@ -38,19 +38,17 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is LoginLoading) {
-          setState(() {
-            isLoading = true;
-          });
+          isLoading = true;
+          log('loading');
         } else if (state is LoginSucess) {
           Navigator.pushNamed(context, Routes.kHomeView);
-          setState(() {
-            isLoading = false;
-          });
+          ShowSnackBar.show(context, 'Logged In Successfully');
+          isLoading = false;
+          log('success');
         } else if (state is LoginFailure) {
           ShowSnackBar.show(context, state.errMessage);
-          setState(() {
-            isLoading = false;
-          });
+          isLoading = false;
+          log('fail');
         }
       },
       builder: (context, state) {

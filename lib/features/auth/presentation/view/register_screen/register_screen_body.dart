@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -43,19 +45,14 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterLoading) {
-          setState(() {
-            isLoading = true;
-          });
+          isLoading = true;
         } else if (state is RegisterSucess) {
           Navigator.pushNamed(context, Routes.kHomeView);
-          setState(() {
-            isLoading = false;
-          });
+          ShowSnackBar.show(context, 'Registered Successfully');
+          isLoading = false;
         } else if (state is RegisterFailure) {
           ShowSnackBar.show(context, state.errMessage);
-          setState(() {
-            isLoading = false;
-          });
+          isLoading = false;
         }
       },
       builder: (context, state) {
@@ -105,10 +102,6 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
   }
 
   void _register({required String email, required String password}) async {
-    if (_password.text != _confirmPass.text) {
-      ShowSnackBar.show(context, 'Password doesn\'t match');
-      return;
-    }
     if (formKey.currentState!.validate()) {
       BlocProvider.of<AuthCubit>(context)
           .registerUser(email: email, password: password);
