@@ -58,9 +58,9 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                 ),
                 const Gap(32),
                 EmailTextField(hintText: 'Email', controller: _email),
-                const Gap(12),
+                const Gap(15),
                 PasswordTextField(hintText: 'Password', controller: _password),
-                const Gap(12),
+                const Gap(30),
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is RegisterLoading) {
