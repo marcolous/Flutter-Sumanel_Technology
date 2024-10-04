@@ -20,7 +20,7 @@ This Flutter project is a task for Sumanel Technology, showcasing a simple app w
 
 <div style="display: flex;">
     <div style="margin: 10px;">
-        <img src="Screenshots/Screenshot1.png" alt="Login Screen" width="250"/>
+        <img src="Screenshots/Screenshot4.png" alt="Login Screen" width="250"/>
         <img src="Screenshots/Screenshot2.png" alt="Register Screen" width="250"/>
         <img src="Screenshots/Screenshot3.png" alt="Register Screen" width="250"/>
     </div>
