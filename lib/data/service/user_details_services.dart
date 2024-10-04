@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +8,7 @@ import 'package:sumanel_technology/data/service/failures.dart';
 class UserDetailsServices {
   final Dio _dio = Dio();
 
-  Future<Either<Failure, UserModel>> fetchUserDetails() async {
+  Future<Either<Failure, List<User>>> fetchUserDetails() async {
     _dio.options.contentType = Headers.jsonContentType;
 
     try {
@@ -20,11 +18,11 @@ class UserDetailsServices {
       if (token != null) {
         _dio.options.headers['authorization'] = 'Token $token';
       }
-      final response = await _dio.get('${Const.userBaseURL}details/');
+      final response = await _dio.get('${Const.userBaseURL}users');
       if (response.statusCode == 200 || response.statusCode == 201) {
-        UserModel user =
-            UserModel.fromJson(response.data as Map<String, dynamic>);
-        log(user.username);
+        List<User> user = (response.data['data'] as List)
+            .map((userJson) => User.fromJson(userJson as Map<String, dynamic>))
+            .toList();
         return right(user);
       } else {
         return left(

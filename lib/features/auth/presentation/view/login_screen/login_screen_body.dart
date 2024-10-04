@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:sumanel_technology/core/utils/no_bounce_scroll_behavior.dart';
 import 'package:sumanel_technology/core/utils/routes.dart';
 import 'package:sumanel_technology/core/utils/show_snack_bar.dart';
 import 'package:sumanel_technology/core/utils/styles.dart';
@@ -35,66 +36,72 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is LoginLoading) {
-          isLoading = true;
-          log('loading');
-        } else if (state is LoginSucess) {
-          Navigator.pushNamed(context, Routes.kHomeView);
-          ShowSnackBar.show(context, 'Logged In Successfully');
-          isLoading = false;
-          log('success');
-        } else if (state is LoginFailure) {
-          ShowSnackBar.show(context, state.errMessage);
-          isLoading = false;
-          log('fail');
-        }
-      },
-      builder: (context, state) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: Form(
-              key: formKey,
-              child: ListView(
-                children: [
-                  const CustomBackButton(),
-                  const Gap(28),
-                  Text(
-                    'Welcome back! Glad to see you, Again!',
-                    style: Styles.style30Bold(context),
-                  ),
-                  const Gap(32),
-                  EmailTextField(
-                      hintText: 'Enter your email', controller: _email),
-                  const Gap(15),
-                  PasswordTextField(
-                      hintText: 'Enter your Password', controller: _password),
-                  const Gap(30),
-                  CustomProgressIndicator(
-                    isLoading: isLoading,
-                    child: CustomButton(
-                      title: 'Login',
-                      onPressed: () =>
-                          _login(email: _email.text, password: _password.text),
-                    ),
-                  ),
-                  const Gap(35),
-                  CustomRow(
-                    title: 'Don\'t have an account? ',
-                    subTitle: 'Register Now',
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, Routes.kRegisterView);
-                    },
-                  )
-                ],
-              ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 22),
+        child: Form(
+          key: formKey,
+          child: ScrollConfiguration(
+            behavior: NoBounceScrollBehavior(),
+            child: ListView(
+              children: [
+                const CustomBackButton(),
+                const Gap(28),
+                Text(
+                  'Welcome back! Glad to see you, Again!',
+                  style: Styles.style30Bold(context),
+                ),
+                const Gap(32),
+                EmailTextField(
+                    hintText: 'Enter your email', controller: _email),
+                const Gap(15),
+                PasswordTextField(
+                    hintText: 'Enter your Password', controller: _password),
+                const Gap(30),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is LoginLoading) {
+                      isLoading = true;
+                      log('loading');
+                    } else if (state is LoginSucess) {
+                      Navigator.pushNamed(context, Routes.kHomeView);
+                      ShowSnackBar.show(context, 'Logged In Successfully');
+                      isLoading = false;
+                      log('success');
+                    } else if (state is LoginFailure) {
+                      ShowSnackBar.show(context, state.errMessage);
+                      isLoading = false;
+                      log('fail');
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomProgressIndicator(
+                      isLoading: isLoading,
+                      child: CustomButton(
+                        title: 'Login',
+                        onPressed: () => _login(
+                            email: _email.text, password: _password.text),
+                      ),
+                    );
+                  },
+                ),
+                const Gap(35),
+                CustomRow(
+                  title: 'Don\'t have an account? ',
+                  subTitle: 'Register Now',
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.kRegisterView,
+                      (route) => false,
+                    );
+                  },
+                )
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 

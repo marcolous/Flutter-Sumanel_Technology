@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:sumanel_technology/core/utils/no_bounce_scroll_behavior.dart';
 import 'package:sumanel_technology/core/utils/routes.dart';
 import 'package:sumanel_technology/core/utils/show_snack_bar.dart';
 import 'package:sumanel_technology/core/utils/styles.dart';
@@ -42,62 +41,68 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is RegisterLoading) {
-          isLoading = true;
-        } else if (state is RegisterSucess) {
-          Navigator.pushNamed(context, Routes.kHomeView);
-          ShowSnackBar.show(context, 'Registered Successfully');
-          isLoading = false;
-        } else if (state is RegisterFailure) {
-          ShowSnackBar.show(context, state.errMessage);
-          isLoading = false;
-        }
-      },
-      builder: (context, state) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: Form(
-              key: formKey,
-              child: ListView(
-                children: [
-                  const CustomBackButton(),
-                  const Gap(28),
-                  Text(
-                    'Hello! Register to get started',
-                    style: Styles.style30Bold(context),
-                  ),
-                  const Gap(32),
-                  EmailTextField(hintText: 'Email', controller: _email),
-                  const Gap(12),
-                  PasswordTextField(
-                      hintText: 'Password', controller: _password),
-                  const Gap(12),
-                  CustomProgressIndicator(
-                    isLoading: isLoading,
-                    child: CustomButton(
-                      title: 'Register',
-                      onPressed: () => _register(
-                          email: _email.text.trim(), password: _password.text),
-                    ),
-                  ),
-                  const Gap(35),
-                  CustomRow(
-                    title: 'Already have an account? ',
-                    subTitle: 'Login Now',
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, Routes.kLoginView);
-                    },
-                  )
-                ],
-              ),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 22),
+        child: Form(
+          key: formKey,
+          child: ScrollConfiguration(
+            behavior: NoBounceScrollBehavior(),
+            child: ListView(
+              children: [
+                const CustomBackButton(),
+                const Gap(28),
+                Text(
+                  'Hello! Register to get started',
+                  style: Styles.style30Bold(context),
+                ),
+                const Gap(32),
+                EmailTextField(hintText: 'Email', controller: _email),
+                const Gap(12),
+                PasswordTextField(hintText: 'Password', controller: _password),
+                const Gap(12),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is RegisterLoading) {
+                      isLoading = true;
+                    } else if (state is RegisterSucess) {
+                      Navigator.pushNamed(context, Routes.kHomeView);
+                      ShowSnackBar.show(context, 'Registered Successfully');
+                      isLoading = false;
+                    } else if (state is RegisterFailure) {
+                      ShowSnackBar.show(context, state.errMessage);
+                      isLoading = false;
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomProgressIndicator(
+                      isLoading: isLoading,
+                      child: CustomButton(
+                        title: 'Register',
+                        onPressed: () => _register(
+                            email: _email.text.trim(),
+                            password: _password.text),
+                      ),
+                    );
+                  },
+                ),
+                const Gap(35),
+                CustomRow(
+                  title: 'Already have an account? ',
+                  subTitle: 'Login Now',
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.kLoginView,
+                      (route) => false,
+                    );
+                  },
+                )
+              ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
