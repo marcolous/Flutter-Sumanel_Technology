@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Styles {
-  static String fontFamily = 'Poppins';
+  static String fontFamily = 'Urbanist';
   static TextStyle style12(BuildContext context) {
     return TextStyle(
       fontSize: getResponsiveFontSize(context, fontSize: 12),
@@ -20,12 +20,48 @@ class Styles {
     );
   }
 
+  static TextStyle style14SemiBold(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 14),
+      fontWeight: FontWeight.w600,
+      fontFamily: fontFamily,
+      color: const Color(0xff8391A1),
+    );
+  }
+
+  static TextStyle style15(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 15),
+      fontWeight: FontWeight.w600,
+      fontFamily: fontFamily,
+      color: Colors.white,
+    );
+  }
+
+  static TextStyle style15Medium(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 15),
+      fontWeight: FontWeight.w500,
+      fontFamily: fontFamily,
+      color: const Color(0xff8391A1),
+    );
+  }
+
   static TextStyle style16(BuildContext context) {
     return TextStyle(
       fontSize: getResponsiveFontSize(context, fontSize: 16),
       fontWeight: FontWeight.w500,
       color: Colors.white,
       fontFamily: fontFamily,
+    );
+  }
+
+  static TextStyle style16Medium(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 16),
+      fontWeight: FontWeight.w500,
+      fontFamily: fontFamily,
+      color: const Color(0xff838BA1),
     );
   }
 
@@ -47,11 +83,27 @@ class Styles {
     );
   }
 
+  static TextStyle style20Light(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 20),
+      fontWeight: FontWeight.w300,
+      fontFamily: fontFamily,
+    );
+  }
+
   static TextStyle style20(BuildContext context) {
     return TextStyle(
       fontSize: getResponsiveFontSize(context, fontSize: 20),
       fontWeight: FontWeight.w800,
       color: Colors.black,
+      fontFamily: fontFamily,
+    );
+  }
+
+  static TextStyle style23(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 23),
+      fontWeight: FontWeight.w400,
       fontFamily: fontFamily,
     );
   }
@@ -65,11 +117,35 @@ class Styles {
     );
   }
 
+  static TextStyle style30Bold(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 30),
+      fontWeight: FontWeight.w700,
+      fontFamily: fontFamily,
+    );
+  }
+
   static TextStyle style35(BuildContext context) {
     return TextStyle(
       fontSize: getResponsiveFontSize(context, fontSize: 35),
       fontWeight: FontWeight.w600,
       color: Colors.white,
+      fontFamily: fontFamily,
+    );
+  }
+
+  static TextStyle style43SemiBold(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 43),
+      fontWeight: FontWeight.w600,
+      fontFamily: fontFamily,
+    );
+  }
+
+  static TextStyle style48(BuildContext context) {
+    return TextStyle(
+      fontSize: getResponsiveFontSize(context, fontSize: 48),
+      fontWeight: FontWeight.w400,
       fontFamily: fontFamily,
     );
   }

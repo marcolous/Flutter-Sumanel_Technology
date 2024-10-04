@@ -1,5 +1,5 @@
-import 'package:firebase_note/screens/register_screen/register_screen_body.dart';
 import 'package:flutter/material.dart';
+import 'package:sumanel_technology/features/auth/presentation/view/register_screen/register_screen_body.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});

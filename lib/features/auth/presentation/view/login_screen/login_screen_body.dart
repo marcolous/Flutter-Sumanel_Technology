@@ -1,20 +1,16 @@
-
-import 'package:firebase_note/cubits/auth_cubit/auth_cubit.dart';
-import 'package:firebase_note/customs/custom_back_button.dart';
-import 'package:firebase_note/customs/custom_button.dart';
-import 'package:firebase_note/customs/custom_google_button.dart';
-import 'package:firebase_note/customs/custom_or_with.dart';
-import 'package:firebase_note/customs/custom_progress_indicator.dart';
-import 'package:firebase_note/customs/custom_row.dart';
-import 'package:firebase_note/customs/email_text_field.dart';
-import 'package:firebase_note/customs/password_text_field.dart';
-import 'package:firebase_note/screens/login_screen/forgot_password_widget.dart';
-import 'package:firebase_note/utils/routes.dart';
-import 'package:firebase_note/utils/show_snack_bar.dart';
-import 'package:firebase_note/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:sumanel_technology/core/utils/routes.dart';
+import 'package:sumanel_technology/core/utils/show_snack_bar.dart';
+import 'package:sumanel_technology/core/utils/styles.dart';
+import 'package:sumanel_technology/core/widgets/custom_back_button.dart';
+import 'package:sumanel_technology/core/widgets/custom_button.dart';
+import 'package:sumanel_technology/core/widgets/custom_progress_indicator.dart';
+import 'package:sumanel_technology/core/widgets/custom_row.dart';
+import 'package:sumanel_technology/core/widgets/email_text_field.dart';
+import 'package:sumanel_technology/core/widgets/password_text_field.dart';
+import 'package:sumanel_technology/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 
 class LoginScreenBody extends StatefulWidget {
   const LoginScreenBody({
@@ -45,13 +41,13 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           setState(() {
             isLoading = true;
           });
-        } else if (state is LoginSuccess) {
-          Navigator.pushNamed(context,Routes.kHomeScreen);
+        } else if (state is LoginSucess) {
+          Navigator.pushNamed(context, Routes.kHomeView);
           setState(() {
             isLoading = false;
           });
         } else if (state is LoginFailure) {
-          ShowSnackBar.show(context, state.errMsg);
+          ShowSnackBar.show(context, state.errMessage);
           setState(() {
             isLoading = false;
           });
@@ -69,7 +65,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                   const Gap(28),
                   Text(
                     'Welcome back! Glad to see you, Again!',
-                    style: Style.style30(context),
+                    style: Styles.style30Bold(context),
                   ),
                   const Gap(32),
                   EmailTextField(
@@ -77,8 +73,6 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                   const Gap(15),
                   PasswordTextField(
                       hintText: 'Enter your Password', controller: _password),
-                  const Gap(15),
-                  const ForgotPasswordWidget(),
                   const Gap(30),
                   CustomProgressIndicator(
                     isLoading: isLoading,
@@ -89,15 +83,12 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
                     ),
                   ),
                   const Gap(35),
-                  const CustomOrWith(title: 'Or Login with'),
-                  const Gap(22),
-                  const CustomGoogleButton(),
                   CustomRow(
                     title: 'Don\'t have an account? ',
                     subTitle: 'Register Now',
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(context,Routes.kRegisterScreen);
+                      Navigator.pushNamed(context, Routes.kRegisterView);
                     },
                   )
                 ],
@@ -112,7 +103,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
   void _login({required String email, required String password}) async {
     if (formKey.currentState!.validate()) {
       BlocProvider.of<AuthCubit>(context)
-          .login(email: email, password: password);
+          .loginUser(email: email, password: password);
     }
   }
 }

@@ -1,5 +1,5 @@
-import 'package:firebase_note/screens/login_screen/login_screen_body.dart';
 import 'package:flutter/material.dart';
+import 'package:sumanel_technology/features/auth/presentation/view/login_screen/login_screen_body.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

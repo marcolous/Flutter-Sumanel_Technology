@@ -1,19 +1,16 @@
-import 'package:firebase_note/cubits/auth_cubit/auth_cubit.dart';
-import 'package:firebase_note/customs/custom_back_button.dart';
-import 'package:firebase_note/customs/custom_button.dart';
-import 'package:firebase_note/customs/custom_google_button.dart';
-import 'package:firebase_note/customs/custom_or_with.dart';
-import 'package:firebase_note/customs/custom_progress_indicator.dart';
-import 'package:firebase_note/customs/custom_row.dart';
-import 'package:firebase_note/customs/email_text_field.dart';
-import 'package:firebase_note/customs/password_text_field.dart';
-import 'package:firebase_note/screens/register_screen/unverified_email_widget.dart';
-import 'package:firebase_note/utils/routes.dart';
-import 'package:firebase_note/utils/show_snack_bar.dart';
-import 'package:firebase_note/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:sumanel_technology/core/utils/routes.dart';
+import 'package:sumanel_technology/core/utils/show_snack_bar.dart';
+import 'package:sumanel_technology/core/utils/styles.dart';
+import 'package:sumanel_technology/core/widgets/custom_back_button.dart';
+import 'package:sumanel_technology/core/widgets/custom_button.dart';
+import 'package:sumanel_technology/core/widgets/custom_progress_indicator.dart';
+import 'package:sumanel_technology/core/widgets/custom_row.dart';
+import 'package:sumanel_technology/core/widgets/email_text_field.dart';
+import 'package:sumanel_technology/core/widgets/password_text_field.dart';
+import 'package:sumanel_technology/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 
 class RegisterScreenBody extends StatefulWidget {
   const RegisterScreenBody({
@@ -49,13 +46,13 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
           setState(() {
             isLoading = true;
           });
-        } else if (state is RegisterSuccess) {
-          Navigator.pushNamed(context,Routes.kVerificationScreen);
+        } else if (state is RegisterSucess) {
+          Navigator.pushNamed(context, Routes.kHomeView);
           setState(() {
             isLoading = false;
           });
         } else if (state is RegisterFailure) {
-          ShowSnackBar.show(context, state.errMsg);
+          ShowSnackBar.show(context, state.errMessage);
           setState(() {
             isLoading = false;
           });
@@ -73,21 +70,14 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                   const Gap(28),
                   Text(
                     'Hello! Register to get started',
-                    style: Style.style30(context),
+                    style: Styles.style30Bold(context),
                   ),
                   const Gap(32),
-                  EmailTextField(hintText: 'Username', controller: _userName),
-                  const Gap(12),
                   EmailTextField(hintText: 'Email', controller: _email),
                   const Gap(12),
                   PasswordTextField(
                       hintText: 'Password', controller: _password),
                   const Gap(12),
-                  PasswordTextField(
-                      hintText: 'Confirm password', controller: _confirmPass),
-                  const Gap(15),
-                  const UnVerifiedEmailWidget(),
-                  const Gap(15),
                   CustomProgressIndicator(
                     isLoading: isLoading,
                     child: CustomButton(
@@ -97,15 +87,12 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
                     ),
                   ),
                   const Gap(35),
-                  const CustomOrWith(title: 'Or Register with'),
-                  const Gap(22),
-                  const CustomGoogleButton(),
                   CustomRow(
                     title: 'Already have an account? ',
                     subTitle: 'Login Now',
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(context,Routes.kLoginScreen);
+                      Navigator.pushNamed(context, Routes.kLoginView);
                     },
                   )
                 ],
@@ -124,7 +111,7 @@ class _RegisterScreenBodyState extends State<RegisterScreenBody> {
     }
     if (formKey.currentState!.validate()) {
       BlocProvider.of<AuthCubit>(context)
-          .register(email: email, password: password);
+          .registerUser(email: email, password: password);
     }
   }
 }
